@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Magnetic Button",
+    "slug": "magnetic-button",
+    "description": "Button subtly follows the cursor for a magnetic feel.",
+    "category": "buttons",
+    "dependencies": ["framer-motion"],
+    "registryDependencies": [],
+    "files": [
+      {
+        "name": "magnetic-button.tsx",
+        "content": "\"use client\";\n\nimport { motion } from \"framer-motion\";\nimport { useState } from \"react\";\n\nexport interface MagneticButtonProps {\n  children: React.ReactNode;\n  className?: string;\n  strength?: number;\n  stiffness?: number;\n  damping?: number;\n}\n\nexport function MagneticButton({\n  children,\n  className = \"\",\n  strength = 0.3,\n  stiffness = 150,\n  damping = 15,\n}: MagneticButtonProps) {\n  const [position, setPosition] = useState({ x: 0, y: 0 });\n\n  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {\n    const rect = e.currentTarget.getBoundingClientRect();\n    const x = (e.clientX - rect.left - rect.width / 2) * strength;\n    const y = (e.clientY - rect.top - rect.height / 2) * strength;\n    setPosition({ x, y });\n  };\n\n  const handleMouseLeave = () => {\n    setPosition({ x: 0, y: 0 });\n  };\n\n  return (\n    <motion.button\n      className={`px-6 py-3 bg-blue-600 text-white rounded-lg font-medium ${className}`}\n      animate={{ x: position.x, y: position.y }}\n      transition={{ type: \"spring\", stiffness, damping }}\n      onMouseMove={handleMouseMove}\n      onMouseLeave={handleMouseLeave}\n    >\n      {children}\n    </motion.button>\n  );\n}\n"
+      }
+    ],
+    "type": "components:ui"
+  }
+]
